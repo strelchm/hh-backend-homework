@@ -18,9 +18,16 @@ public class PaginationResponseDto<T> {
     public PaginationResponseDto() {
     }
 
-    public PaginationResponseDto(List<T> data, Long pages, Integer perPage, Integer page) {
+    public PaginationResponseDto(List<T> data, Long itemCount) {
         this.items = data;
-        this.itemCount = pages;
+        this.itemCount = itemCount;
+        this.perPage = perPage;
+        this.page = page;
+    }
+
+    public PaginationResponseDto(List<T> data, Long itemCount, Integer perPage, Integer page) {
+        this.items = data;
+        this.itemCount = itemCount;
         this.perPage = perPage;
         this.page = page;
     }

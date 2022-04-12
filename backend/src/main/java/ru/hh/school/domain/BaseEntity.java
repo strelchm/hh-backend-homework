@@ -9,7 +9,7 @@ import javax.persistence.MappedSuperclass;
 //@EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
 //    @Temporal(TemporalType.TIMESTAMP)

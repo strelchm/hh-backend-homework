@@ -7,6 +7,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 import ru.hh.school.resource.dto.HHEmployerResponseDto;
 import ru.hh.school.resource.dto.HHEmployersResponseDto;
@@ -65,7 +66,8 @@ public class EmployerServiceImpl implements EmployerService {
                     HHEmployerResponseDto.class
             );
             return response.getBody();
-        } catch (Exception e) {
+        } catch (RestClientResponseException e) {
+            logger.error(String.format("Error during getting employer %d from HH API", id), e);
             return null;
         }
     }

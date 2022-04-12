@@ -1,11 +1,9 @@
 create table employer
 (
-    id          bigint not null
-        constraint employer_pkey
-            primary key,
-    areaid      bigint,
+    id          bigserial primary key,
+    area_id      bigint not null,
     description text,
-    name        varchar(255)
+    name        varchar(255) not null
 );
 
 alter table employer
@@ -13,19 +11,15 @@ alter table employer
 
 create table vacancy
 (
-    id           bigint not null
-        constraint vacancy_pkey
-            primary key,
-    areaid       bigint,
-    createdat    timestamp,
-    name         text,
+    id           bigserial primary key,
+    area_id       bigint,
+    created_at    timestamp,
+    name         text  not null,
     currency     text,
     start_salary double precision,
     gross        boolean,
     end_salary   double precision,
-    employer_id  bigint
-        constraint fkeepnrqfc3aewgiwvmi0ywxs6b
-            references employer
+    employer_id  bigint not null references employer
 );
 
 alter table vacancy
@@ -33,20 +27,14 @@ alter table vacancy
 
 create table favourite
 (
-    id          bigint not null
-        constraint favourite_pkey
-            primary key,
+    id          bigserial primary key,
     comment     varchar(255),
-    datecreate  timestamp,
-    linkid      bigint,
-    type        integer,
-    viewscount  bigint,
-    employer_id bigint
-        constraint fk4yq50796p050s3dk6rv95aefd
-            references employer,
-    vacancy_id  bigint
-        constraint fk3yqwo4uqt7qc9at2mt441c8sp
-            references vacancy
+    date_create  timestamp not null,
+    link_id      bigint not null,
+    type        integer not null,
+    views_count  bigint not null,
+    employer_id bigint not null references employer,
+    vacancy_id  bigint not null references vacancy
 );
 
 alter table favourite

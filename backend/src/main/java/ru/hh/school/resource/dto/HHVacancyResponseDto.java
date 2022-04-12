@@ -23,7 +23,7 @@ public class HHVacancyResponseDto {
         this.name = name;
         this.area = area;
         this.salary = salary;
-//        this.createdAt = createdAt;
+        this.createdAt = createdAt;
         this.employer = employer;
     }
 
@@ -59,13 +59,13 @@ public class HHVacancyResponseDto {
         this.salary = salary;
     }
 
-//    public LocalDateTime getCreatedAt() {
-//        return createdAt;
-//    }
-//
-//    public void setCreatedAt(LocalDateTime createdAt) {
-//        this.createdAt = createdAt;
-//    }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 
     public VacancyEmployerResponseDto getEmployer() {
         return employer;

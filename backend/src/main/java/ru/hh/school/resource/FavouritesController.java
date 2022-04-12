@@ -14,6 +14,7 @@ import ru.hh.school.service.FavouriteService;
 import ru.hh.school.service.VacancyService;
 
 import javax.inject.Singleton;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -52,13 +53,12 @@ public class FavouritesController {
      */
     @POST
     @Path(value = "/employer")
-    public Response addFavouriteEmployer(FavouriteEmployerRequestDto employer) {
+    public Response addFavouriteEmployer(@NotNull(message = "DTO is null") FavouriteEmployerRequestDto employer) {
         HHEmployerResponseDto hhEmployer = employerService.getHHEmployerById(employer.getEmployerId());
         if (hhEmployer == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("Employer not found").build();
         }
         Favourite favouriteEmployer = favouriteService.addEmployer(hhEmployer, employer.getComment());
-        logger.info("addFavouriteVacancy");
         FavouriteEmployerResponseDto response = favouriteMapper.toFavoriteEmployerResponseDto(favouriteEmployer);
         response.setArea(areaService.getAreaData(favouriteEmployer.getEmployer().getAreaId()));
         return Response.ok(response).build();
@@ -71,13 +71,12 @@ public class FavouritesController {
     @Path(value = "/employer")
     public Response getFavouriteEmployers(@DefaultValue(DEFAULT_PAGE_PARAM) @QueryParam("page") Integer page,
                                           @DefaultValue(DEFAULT_PER_PAGE_PARAM) @QueryParam("per_page") Integer perPage) {
-        List<Favourite> favouriteEmployers = favouriteService.getEmployers(page, perPage);
-        Long favouriteEmployersTotalCount = favouriteService.countEmployers();
-        favouriteService.incrementViews(favouriteEmployers);
-        logger.info("getFavouriteEmployers");
-        List<FavouriteEmployerResponseDto> employerDtoList =
-                favouriteEmployers.stream().map(favouriteMapper::toFavoriteEmployerResponseDto).collect(Collectors.toList());
-        return Response.ok(new FavouriteEmployersResponseDto(employerDtoList, favouriteEmployersTotalCount, perPage, page)).build();
+        PaginationResponseDto<Favourite> favouriteEmployers = favouriteService.getEmployers(page, perPage);
+        List<FavouriteEmployerResponseDto> employerDtoList = favouriteEmployers.getItems().stream()
+                .map(favouriteMapper::toFavoriteEmployerResponseDto).collect(Collectors.toList());
+        return Response
+                .ok(new FavouriteEmployersResponseDto(employerDtoList, favouriteEmployers.getItemCount(), perPage, page))
+                .build();
     }
 
     /**
@@ -85,7 +84,8 @@ public class FavouritesController {
      */
     @PUT
     @Path(value = "/employer/{employer_id}")
-    public Response updateFavouriteEmployer(@PathParam("employer_id") Long employerId, FavouriteUpdateRequestDto updateDto) {
+    public Response updateFavouriteEmployer(@PathParam("employer_id") @NotNull(message = "Employer id is null") Long employerId,
+                                            FavouriteUpdateRequestDto updateDto) {
         Favourite response = favouriteService.updateFavouriteEmployer(employerId, updateDto.getComment());
         return Response.ok(favouriteMapper.toFavoriteEmployerResponseDto(response)).build();
     }
@@ -95,10 +95,9 @@ public class FavouritesController {
      */
     @DELETE
     @Path(value = "/employer/{employer_id}")
-    public Response deleteFavouriteEmployer(@PathParam("employer_id") Long employerId) {
+    public Response deleteFavouriteEmployer(@PathParam("employer_id") @NotNull(message = "Employer id is null") Long employerId) {
         try {
             favouriteService.deleteEmployerById(employerId);
-            logger.info("deleteFavouriteEmployer");
             return Response.ok().build();
         } catch (RuntimeException e) {
             return Response.status(Response.Status.NOT_FOUND).entity("Favourite employer not found").build();
@@ -110,7 +109,7 @@ public class FavouritesController {
      */
     @POST
     @Path(value = "/employer/{employer_id}/refresh")
-    public Response refreshFavouriteEmployer(@PathParam("employer_id") Long employerId) {
+    public Response refreshFavouriteEmployer(@PathParam("employer_id") @NotNull(message = "Employer id is null") Long employerId) {
         HHEmployerResponseDto hhEmployer = employerService.getHHEmployerById(employerId);
         if (hhEmployer == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("Employer not found").build();
@@ -119,7 +118,6 @@ public class FavouritesController {
         if (favouriteEmployer == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("Favourite employer not found").build();
         }
-        logger.info("refreshFavouriteEmployer");
         EmployerResponseDto response = favouriteMapper.toFavoriteEmployerDto(favouriteEmployer);
         response.setArea(areaService.getAreaData(favouriteEmployer.getAreaId()));
         return Response.ok(response).build();
@@ -133,13 +131,12 @@ public class FavouritesController {
      */
     @POST
     @Path(value = "/vacancy")
-    public Response addFavouriteVacancy(FavouriteVacancyRequestDto vacancy) {
+    public Response addFavouriteVacancy(@NotNull(message = "DTO is null") FavouriteVacancyRequestDto vacancy) {
         HHVacancyResponseDto hhVacancy = vacancyService.getHHVacancyById(vacancy.getVacancyId());
         if (hhVacancy == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("Vacancy not found").build();
         }
         Favourite favouriteVacancy = favouriteService.addVacancy(hhVacancy, vacancy.getComment());
-        logger.info("addFavouriteVacancy");
         FavouriteVacancyResponseDto response = favouriteMapper.toFavouriteVacancyResponseDto(favouriteVacancy);
         response.setArea(areaService.getAreaData(favouriteVacancy.getVacancy().getAreaId()));
         return Response.ok(response).build();
@@ -150,7 +147,8 @@ public class FavouritesController {
      */
     @PUT
     @Path(value = "/vacancy/{vacancy_id}")
-    public Response updateFavouriteVacancy(@PathParam("vacancy_id") Long vacancyId, FavouriteUpdateRequestDto updateDto) {
+    public Response updateFavouriteVacancy(@PathParam("vacancy_id") @NotNull(message = "Vacancy id is null") Long vacancyId,
+                                           FavouriteUpdateRequestDto updateDto) {
         Favourite response = favouriteService.updateFavouriteVacancy(vacancyId, updateDto.getComment());
         return Response.ok(favouriteMapper.toFavouriteVacancyResponseDto(response)).build();
     }
@@ -163,13 +161,12 @@ public class FavouritesController {
     @Path(value = "/vacancy")
     public Response getFavouriteVacancies(@DefaultValue(DEFAULT_PAGE_PARAM) @QueryParam("page") Integer page,
                                           @DefaultValue(DEFAULT_PER_PAGE_PARAM) @QueryParam("per_page") Integer perPage) {
-        logger.info("getFavouriteVacancies");
-        List<Favourite> favouriteVacancies = favouriteService.getVacancies(page, perPage);
-        Long favouriteVacanciesTotalCount = favouriteService.countVacancies();
-        favouriteService.incrementViews(favouriteVacancies);
-        List<FavouriteVacancyResponseDto> vacancyDtoList =
-                favouriteVacancies.stream().map(favouriteMapper::toFavouriteVacancyResponseDto).collect(Collectors.toList());
-        return Response.ok(new FavouriteVacanciesResponseDto(vacancyDtoList, favouriteVacanciesTotalCount, perPage, page)).build();
+        PaginationResponseDto<Favourite> favouriteVacancies = favouriteService.getVacancies(page, perPage);
+        List<FavouriteVacancyResponseDto> vacancyDtoList = favouriteVacancies.getItems()
+                .stream().map(favouriteMapper::toFavouriteVacancyResponseDto).collect(Collectors.toList());
+        return Response.ok(
+                new FavouriteVacanciesResponseDto(vacancyDtoList, favouriteVacancies.getItemCount(), perPage, page)
+        ).build();
     }
 
     /**
@@ -177,7 +174,7 @@ public class FavouritesController {
      */
     @DELETE
     @Path(value = "/vacancy/{vacancy_id}")
-    public Response deleteFavouriteVacancy(@PathParam("vacancy_id") Long vacancyId) {
+    public Response deleteFavouriteVacancy(@PathParam("vacancy_id") @NotNull(message = "Vacancy id is null") Long vacancyId) {
         favouriteService.deleteVacancyById(vacancyId);
         return Response.ok().build();
     }
@@ -187,7 +184,7 @@ public class FavouritesController {
      */
     @POST
     @Path(value = "/vacancy/{vacancy_id}/refresh")
-    public Response refreshFavouriteVacancy(@PathParam("vacancy_id") Long vacancyId) {
+    public Response refreshFavouriteVacancy(@PathParam("vacancy_id") @NotNull(message = "Vacancy id is null") Long vacancyId) {
         HHVacancyResponseDto hhVacancy = vacancyService.getHHVacancyById(vacancyId);
         if (hhVacancy == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("Vacancy not found").build();

@@ -1,32 +1,37 @@
 package ru.hh.school.resource.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 
 public class FavouriteVacanciesResponseData {
     private String id;
     private String name;
-    private Date date_create; // дата добавления в избранное
+    @JsonProperty(value = "date_create")
+    private Date dateCreate; // дата добавления в избранное
     private AreaData area;
     private SalaryData salary;
-    private Date created_at;
+    @JsonProperty(value = "created_at")
+    private Date createdAt;
     private Long employer;
     private Long popularity; // та же логика, что и в компаниях
-    private Long views_count;
+    @JsonProperty(value = "views_count")
+    private Long viewsCount;
     private String comment;
 
     public FavouriteVacanciesResponseData() {
     }
 
-    public FavouriteVacanciesResponseData(String id, String name, Date date_create, AreaData area, SalaryData salary, Date created_at, Long employer, Long popularity, Long views_count, String comment) {
+    public FavouriteVacanciesResponseData(String id, String name, Date dateCreate, AreaData area, SalaryData salary, Date createdAt, Long employer, Long popularity, Long viewsCount, String comment) {
         this.id = id;
         this.name = name;
-        this.date_create = date_create;
+        this.dateCreate = dateCreate;
         this.area = area;
         this.salary = salary;
-        this.created_at = created_at;
+        this.createdAt = createdAt;
         this.employer = employer;
         this.popularity = popularity;
-        this.views_count = views_count;
+        this.viewsCount = viewsCount;
         this.comment = comment;
     }
 
@@ -46,12 +51,12 @@ public class FavouriteVacanciesResponseData {
         this.name = name;
     }
 
-    public Date getDate_create() {
-        return date_create;
+    public Date getDateCreate() {
+        return dateCreate;
     }
 
-    public void setDate_create(Date date_create) {
-        this.date_create = date_create;
+    public void setDateCreate(Date dateCreate) {
+        this.dateCreate = dateCreate;
     }
 
     public AreaData getArea() {
@@ -70,12 +75,12 @@ public class FavouriteVacanciesResponseData {
         this.salary = salary;
     }
 
-    public Date getCreated_at() {
-        return created_at;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(Date created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Long getEmployer() {
@@ -94,12 +99,12 @@ public class FavouriteVacanciesResponseData {
         this.popularity = popularity;
     }
 
-    public Long getViews_count() {
-        return views_count;
+    public Long getViewsCount() {
+        return viewsCount;
     }
 
-    public void setViews_count(Long views_count) {
-        this.views_count = views_count;
+    public void setViewsCount(Long viewsCount) {
+        this.viewsCount = viewsCount;
     }
 
     public String getComment() {

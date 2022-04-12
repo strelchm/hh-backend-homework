@@ -7,6 +7,7 @@ import ru.hh.school.resource.mapper.EmployerMapper;
 import ru.hh.school.service.EmployerService;
 
 import javax.inject.Singleton;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
@@ -48,8 +49,7 @@ public class EmployerController {
      */
     @GET
     @Path(value = "/{employer_id}")
-    public Response getEmployer(@PathParam("employer_id") Long employerId) {
-        logger.info("getEmployers {}", employerId);
+    public Response getEmployer(@PathParam("employer_id") @NotNull(message = "Employer id is null") Long employerId) {
         return Response.ok(employerMapper.toEmployerDto(employerService.getHHEmployerById(employerId))).build();
     }
 }

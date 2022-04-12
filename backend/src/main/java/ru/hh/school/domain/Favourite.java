@@ -15,14 +15,17 @@ public class Favourite extends BaseEntity {
     @JoinColumn(name = "vacancy_id")
     private Vacancy vacancy;
 
+    @Column(name = "link_id")
     private Long linkId;
 
     private FavouriteType type;
 
     private String comment;
 
-    private Long viewsCount;
+    @Column(name = "views_count")
+    private long viewsCount;
 
+    @Column(name = "date_create")
     private LocalDateTime dateCreate;
 
     public Favourite() {
@@ -34,7 +37,6 @@ public class Favourite extends BaseEntity {
         this.type = type;
         this.comment = comment;
         this.dateCreate = LocalDateTime.now();
-        this.viewsCount = 0L;
     }
 
     public Favourite(Employer employer, Long linkId, FavouriteType type, String comment) {
@@ -43,7 +45,6 @@ public class Favourite extends BaseEntity {
         this.type = type;
         this.comment = comment;
         this.dateCreate = LocalDateTime.now();
-        this.viewsCount = 0L;
     }
 
     public Employer getEmployer() {

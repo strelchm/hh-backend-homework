@@ -12,8 +12,7 @@ public class Employer extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String description; // описание компании
 
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "area_id", referencedColumnName = "id")
+    @Column(name = "area_id")
     private Long areaId;
 
     public Employer() {

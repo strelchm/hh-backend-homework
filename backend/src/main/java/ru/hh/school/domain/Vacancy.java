@@ -14,14 +14,14 @@ public class Vacancy extends BaseEntity {
     @Embedded
     private SalaryData salary; // зарплата в том же формате, что в api hh.ru
 
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @OneToOne
     @JoinColumn(name = "employer_id")
     private Employer employer;
 
-//    @OneToOne(cascade = CascadeType.PERSIST)
-//    @JoinColumn(name = "area_id", referencedColumnName = "id")
+    @Column(name = "area_id")
     private Long areaId;
 
     public Vacancy() {

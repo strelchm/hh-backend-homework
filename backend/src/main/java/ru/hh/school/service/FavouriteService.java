@@ -5,15 +5,14 @@ import ru.hh.school.domain.Favourite;
 import ru.hh.school.domain.Vacancy;
 import ru.hh.school.resource.dto.HHEmployerResponseDto;
 import ru.hh.school.resource.dto.HHVacancyResponseDto;
+import ru.hh.school.resource.dto.PaginationResponseDto;
 
 import java.util.List;
 
 public interface FavouriteService {
     void incrementViews(List<Favourite> favourites);
 
-    List<Favourite> getEmployers(Integer page, Integer perPage);
-
-    Long countEmployers();
+    PaginationResponseDto<Favourite> getEmployers(Integer page, Integer perPage);
 
     Favourite addEmployer(HHEmployerResponseDto hhEmployer, String comment);
 
@@ -23,9 +22,7 @@ public interface FavouriteService {
 
     void deleteEmployerById(Long employerId);
 
-    List<Favourite> getVacancies(Integer page, Integer perPage);
-
-    Long countVacancies();
+    PaginationResponseDto<Favourite> getVacancies(Integer page, Integer perPage);
 
     Favourite addVacancy(HHVacancyResponseDto hhVacancy, String comment);
 

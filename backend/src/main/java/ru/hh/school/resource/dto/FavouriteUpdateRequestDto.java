@@ -1,7 +1,10 @@
 package ru.hh.school.resource.dto;
 
+import org.springframework.lang.Nullable;
+
 public class FavouriteUpdateRequestDto {
-    private String comment; // комментарий. Может быть пустым
+    @Nullable
+    private String comment; // комментарий
 
     public FavouriteUpdateRequestDto() {
     }

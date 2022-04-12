@@ -16,6 +16,7 @@ import ru.hh.school.exception.BadRequestException;
 import ru.hh.school.exception.NotFoundException;
 import ru.hh.school.resource.dto.HHEmployerResponseDto;
 import ru.hh.school.resource.dto.HHVacancyResponseDto;
+import ru.hh.school.resource.dto.PaginationResponseDto;
 import ru.hh.school.service.EmployerService;
 import ru.hh.school.service.FavouriteService;
 
@@ -60,12 +61,14 @@ public class FavouriteServiceImpl implements FavouriteService {
     }
 
     @Override
-    public List<Favourite> getEmployers(Integer page, Integer perPage) {
-        return favouriteRepository.getAllByFavouriteType(page, perPage, FavouriteType.EMPLOYER);
+    @Transactional
+    public PaginationResponseDto<Favourite> getEmployers(Integer page, Integer perPage) {
+        List<Favourite> favouriteList = favouriteRepository.getAllByFavouriteType(page, perPage, FavouriteType.EMPLOYER);
+        incrementViews(favouriteList);
+        return new PaginationResponseDto<>(favouriteList, countEmployers());
     }
 
-    @Override
-    public Long countEmployers() {
+    private Long countEmployers() {
         return favouriteRepository.countAllByFavouriteType(FavouriteType.EMPLOYER);
     }
 
@@ -121,12 +124,14 @@ public class FavouriteServiceImpl implements FavouriteService {
     }
 
     @Override
-    public List<Favourite> getVacancies(Integer page, Integer perPage) {
-        return favouriteRepository.getAllByFavouriteType(page, perPage, FavouriteType.VACANCY);
+    @Transactional
+    public PaginationResponseDto<Favourite> getVacancies(Integer page, Integer perPage) {
+        List<Favourite> favouriteList = favouriteRepository.getAllByFavouriteType(page, perPage, FavouriteType.VACANCY);
+        incrementViews(favouriteList);
+        return new PaginationResponseDto<>(favouriteList, countVacancies());
     }
 
-    @Override
-    public Long countVacancies() {
+    private Long countVacancies() {
         return favouriteRepository.countAllByFavouriteType(FavouriteType.VACANCY);
     }
 

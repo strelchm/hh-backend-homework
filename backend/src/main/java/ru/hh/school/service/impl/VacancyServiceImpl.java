@@ -7,6 +7,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 import ru.hh.school.resource.dto.HHVacanciesResponseDto;
 import ru.hh.school.resource.dto.HHVacancyResponseDto;
@@ -65,7 +66,8 @@ public class VacancyServiceImpl implements VacancyService {
                     HHVacancyResponseDto.class
             );
             return response.getBody();
-        } catch (Exception e) {
+        } catch (RestClientResponseException e) {
+            logger.error(String.format("Error during getting vacancy %d from HH API", vacancyId), e);
             return null;
         }
     }

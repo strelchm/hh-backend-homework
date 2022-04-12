@@ -7,6 +7,7 @@ import ru.hh.school.resource.mapper.VacancyMapper;
 import ru.hh.school.service.VacancyService;
 
 import javax.inject.Singleton;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
@@ -47,7 +48,7 @@ public class VacancyController {
    */
   @GET
   @Path(value = "/{vacancy_id}")
-  public Response getVacancy(@PathParam("vacancy_id") Long vacancyId) {
+  public Response getVacancy(@PathParam("vacancy_id") @NotNull(message = "Vacancy id is null") Long vacancyId) {
     return Response.ok(vacancyMapper.toVacancyDto(vacancyService.getHHVacancyById(vacancyId))).build();
   }
 }
